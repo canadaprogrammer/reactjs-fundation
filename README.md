@@ -91,7 +91,7 @@
   </script>
   ```
 
-## State Hook
+## State Hook (`React.useState()`)
 
 - ```jsx
   <script type="text/babel">
@@ -161,7 +161,19 @@
   - ```jsx
     <script type="text/babel">
       const MinutesToHours = () => {
-        ...
+        const [amount, setAmount] = React.useState(0);
+        const [flipped, setFlipped] = React.useState(false);
+
+        const onChangeAmount = (event) => {
+          setAmount(event.target.value);
+        }
+        const reset = () => {
+          setAmount(0);
+        }
+        const flip = () => {
+          reset();
+          setFlipped((current) => !current);
+        }
         return (
         <div>
           <div>
@@ -178,7 +190,33 @@
         )
       };
       const KmToMiles = () => {
-        ...
+        const [amount, setAmount] = React.useState(0);
+        const [flipped, setFlipped] = React.useState(false);
+
+        const onChangeAmount = (event) => {
+          setAmount(event.target.value);
+        }
+        const reset = () => {
+          setAmount(0);
+        }
+        const flip = () => {
+          reset();
+          setFlipped((current) => !current);
+        }
+        return (
+        <div>
+          <div>
+            <label htmlFor="km">Km</label>
+            <input placeholder="km" type="number" id="km" min="0" value={flipped ? amount * 1.609 : amount} onChange={onChangeAmount} disabled={flipped}/>
+          </div>
+          <div>
+            <label htmlFor="miles">Miles</label>
+            <input placeholder="miles" type="number" id="miles" value={flipped ? amount : Math.round((amount / 1.609) * 1000) / 1000} onChange={onChangeAmount} disabled={!flipped} />
+          </div>
+          <button onClick={reset}>Reset</button>
+          <button onClick={flip}>Flip ({flipped ? 'Km to Miles' : 'Miles to Km'})</button>
+        </div>
+        )
       };
       const App = () => {
         const [selected, setSelected] = React.useState('');
@@ -203,3 +241,80 @@
       ReactDOM.render(<App />, root);
     </script>
     ```
+
+## Prop
+
+- send data from a parent component to a child component
+
+- ```jsx
+  <script type="text/babel">
+    // props.text, props.changeValue
+    const Btn =  ({text, changeValue}) => {
+      console.log(`${text} was rendered`);
+      return (
+        <button
+          onClick={changeValue}
+          style={{
+            backgroundColor: 'tomato',
+            color: 'white',
+            padding: '10px 20px',
+            border: 0,
+            borderRadius: 10,
+          }}
+        >
+          {text}
+        </button>
+      );
+    }
+    // re-rendering only new components
+    const MemorizedBtn = React.memo(Btn);
+    const App = () => {
+      const [value, setValue] = React.useState('Save Changes');
+      const changeValue = () => setValue('Revert Changes');
+      return (
+      <div>
+        <MemorizedBtn text={value} changeValue={changeValue}/>
+        <MemorizedBtn text="Continue" />
+      </div>
+    )};
+
+    const root = document.getElementById('root');
+    ReactDOM.render(<App />, root);
+  </script>
+  ```
+
+## Prop Types
+
+- check what types the props receive
+
+- ```jsx
+  <script type="text/babel">
+    const Btn = ({text, fontSize = 16}) => {
+      return (
+        <button
+          style={{
+            ...
+            fontSize,
+          }}
+        >
+          {text}
+        </button>
+      );
+    }
+    // check the right type and the existence
+    Btn.propTypes = {
+      text: PropTypes.string.isRequired,
+      fontSize: PropTypes.number
+    }
+    const App = () => {
+      return (
+      <div>
+        <Btn text="Save Changes" fontSize={18} />
+        <Btn text={"Continue"} />
+      </div>
+    )};
+
+    const root = document.getElementById('root');
+    ReactDOM.render(<App />, root);
+  </script>
+  ```
