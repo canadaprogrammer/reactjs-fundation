@@ -318,3 +318,25 @@
     ReactDOM.render(<App />, root);
   </script>
   ```
+
+## Frameworks
+
+### Gatsby
+
+- We pre-generate our pages before we publish our website.
+
+- for interactive, static, pre-generated websites like landing pages or blogs
+
+- Need to learn a little bit of GraphQL in the process
+
+### Remix
+
+- We run the code in the server side on demand when the user wants it.
+
+- Remix needs a server because Remix runs in server and in the browser.
+
+- Remix is going to render a page on the server first. Remix is going to run React.js on the backend and Remix is going to take the output and give that to the user. So, users aren't going to see loading indicators anywhere. When they get the page, it will be 100% fully rendered.
+
+### Next.js
+
+- It allows you to pre-generate pages in your website. It also allows you to choose if you want to render your pages in the server side.
